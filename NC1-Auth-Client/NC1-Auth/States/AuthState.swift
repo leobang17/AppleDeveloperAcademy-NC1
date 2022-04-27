@@ -12,9 +12,29 @@ enum AuthState {
 }
 
 class AuthStates: ObservableObject {
-    @Published var state: AuthState = .idle;
+    @Published var state: AuthState = .visitor;
+    
+    init() {
+        initState()
+    }
     
     public func setState(targetStatus: AuthState) -> Void {
         self.state = targetStatus;
+    }
+    
+    private func initState() {
+        switch isLoggedIn() {
+        case true:
+            self.state = .authenticated
+        case false:
+            self.state = .visitor
+        }
+    }
+    
+    private func isLoggedIn() -> Bool {
+        guard UserDefaults.standard.string(forKey: "jsonwebtoken") != nil else {
+            return false;
+        }
+        return true;
     }
 }

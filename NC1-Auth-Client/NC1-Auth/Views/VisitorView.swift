@@ -9,10 +9,13 @@ import SwiftUI
 
 struct VisitorView: View {
     var body: some View {
-        Text("VisitorView 입니다.")
+        NavigationView {
+            Text("요부분은 visitor navigation")
+        }
         ButtonView(name: "idle로", targetStatus: .idle)
         ButtonView(name: "visitor로", targetStatus: .visitor)
         ButtonView(name: "authenticated로", targetStatus: .authenticated)
+
     }
 }
 
