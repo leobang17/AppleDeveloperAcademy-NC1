@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A8311AA128195A2500FD6268 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8311AA028195A2500FD6268 /* UserInfo.swift */; };
+		A8311AA328196E4D00FD6268 /* LoginModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8311AA228196E4D00FD6268 /* LoginModalView.swift */; };
+		A8311AA528197BFB00FD6268 /* UserInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8311AA428197BFB00FD6268 /* UserInput.swift */; };
+		A8311AA928197CC400FD6268 /* UserInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8311AA828197CC400FD6268 /* UserInputView.swift */; };
 		A8C34F8E2819377B00FC9B67 /* ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8C34F8D2819377B00FC9B67 /* ButtonView.swift */; };
 		A8F2F7D92818E26B008EDC94 /* NC1_AuthApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8F2F7D82818E26B008EDC94 /* NC1_AuthApp.swift */; };
 		A8F2F7DB2818E26B008EDC94 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8F2F7DA2818E26B008EDC94 /* ContentView.swift */; };
@@ -40,6 +44,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A8311AA028195A2500FD6268 /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
+		A8311AA228196E4D00FD6268 /* LoginModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModalView.swift; sourceTree = "<group>"; };
+		A8311AA428197BFB00FD6268 /* UserInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInput.swift; sourceTree = "<group>"; };
+		A8311AA828197CC400FD6268 /* UserInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInputView.swift; sourceTree = "<group>"; };
 		A8C34F8D2819377B00FC9B67 /* ButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
 		A8F2F7D52818E26B008EDC94 /* NC1-Auth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "NC1-Auth.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8F2F7D82818E26B008EDC94 /* NC1_AuthApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NC1_AuthApp.swift; sourceTree = "<group>"; };
@@ -83,6 +91,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A8311A9F28195A1600FD6268 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A8311AA028195A2500FD6268 /* UserInfo.swift */,
+				A8311AA428197BFB00FD6268 /* UserInput.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A8423E94281A2BFC0043186E /* Services */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		A8F2F7CC2818E26B008EDC94 = {
 			isa = PBXGroup;
 			children = (
@@ -106,6 +130,8 @@
 		A8F2F7D72818E26B008EDC94 /* NC1-Auth */ = {
 			isa = PBXGroup;
 			children = (
+				A8423E94281A2BFC0043186E /* Services */,
+				A8311A9F28195A1600FD6268 /* Models */,
 				A8F2F80C2818E721008EDC94 /* ViewProvider */,
 				A8F2F80B2818E716008EDC94 /* States */,
 				A8F2F80A2818E703008EDC94 /* Views */,
@@ -149,6 +175,8 @@
 				A8F2F8042818E316008EDC94 /* VisitorView.swift */,
 				A8F2F8082818E4EE008EDC94 /* EmptyView.swift */,
 				A8C34F8D2819377B00FC9B67 /* ButtonView.swift */,
+				A8311AA228196E4D00FD6268 /* LoginModalView.swift */,
+				A8311AA828197CC400FD6268 /* UserInputView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -302,10 +330,14 @@
 				A8F2F7DB2818E26B008EDC94 /* ContentView.swift in Sources */,
 				A8F2F8032818E2CE008EDC94 /* MainView.swift in Sources */,
 				A8F2F8072818E458008EDC94 /* AuthState.swift in Sources */,
+				A8311AA528197BFB00FD6268 /* UserInput.swift in Sources */,
+				A8311AA928197CC400FD6268 /* UserInputView.swift in Sources */,
 				A8C34F8E2819377B00FC9B67 /* ButtonView.swift in Sources */,
 				A8F2F7D92818E26B008EDC94 /* NC1_AuthApp.swift in Sources */,
 				A8F2F8092818E4EE008EDC94 /* EmptyView.swift in Sources */,
+				A8311AA328196E4D00FD6268 /* LoginModalView.swift in Sources */,
 				A8F2F8052818E316008EDC94 /* VisitorView.swift in Sources */,
+				A8311AA128195A2500FD6268 /* UserInfo.swift in Sources */,
 				A8F2F80E2818E72B008EDC94 /* AuthViewProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
