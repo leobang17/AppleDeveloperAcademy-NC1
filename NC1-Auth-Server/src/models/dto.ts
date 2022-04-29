@@ -5,3 +5,7 @@ export class UserInputDto {
     public email: string
   ) {}
 }
+
+export class SignInDto {
+  constructor(public username: string, public password: string) {}
+}

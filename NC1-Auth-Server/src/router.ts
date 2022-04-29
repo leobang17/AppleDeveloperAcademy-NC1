@@ -1,9 +1,10 @@
 import express from "express";
 import { DIContainer } from "./DIContainer";
-import { UserInputDto } from "./models/dto";
+import { SignInDto, UserInputDto } from "./models/dto";
+import { authenticate } from "./middlewares/auth";
 
 const router = express.Router();
-const diContainer = new DIContainer();
+const diContainer = DIContainer.instance;
 const authService = diContainer.getService();
 
 router.get("/", (req, res) => {
@@ -16,9 +17,14 @@ router.post("/signup", (req, res) => {
   res.json(result);
 });
 
-router.get("/all", (req, res) => {
+router.get("/all", authenticate, (req, res) => {
   const result = authService.getAllUsers();
   res.json(result);
+});
+
+router.post("/signin", (req, res) => {
+  const body = req.body as SignInDto;
+  res.json(authService.signIn(body));
 });
 
 export default router;
