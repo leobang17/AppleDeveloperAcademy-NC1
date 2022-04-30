@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { BaseResponse } from "../baseReponse";
 import { DIContainer } from "../DIContainer";
-import jwt, { JsonWebTokenError, JwtPayload } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
 const diContainer = DIContainer.instance;
 const userService = diContainer.getService();

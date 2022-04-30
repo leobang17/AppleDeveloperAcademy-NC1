@@ -32,6 +32,8 @@ export class UserService {
       signinValues.username
     );
 
+    console.log(signinValues);
+
     if (!findUser) {
       return new BaseResponse("유저 없음", "false");
     }
