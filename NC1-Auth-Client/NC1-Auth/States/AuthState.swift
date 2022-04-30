@@ -12,7 +12,7 @@ enum AuthState {
 }
 
 class AuthStates: ObservableObject {
-    @Published var state: AuthState = .visitor;
+    @Published var state: AuthState = .idle
     
     init() {
         initState()
@@ -33,8 +33,10 @@ class AuthStates: ObservableObject {
     
     private func isLoggedIn() -> Bool {
         guard UserDefaults.standard.string(forKey: "jsonwebtoken") != nil else {
+            print("로그인 안되어있음")
             return false;
         }
+        print("로그인 되어있음")
         return true;
     }
 }

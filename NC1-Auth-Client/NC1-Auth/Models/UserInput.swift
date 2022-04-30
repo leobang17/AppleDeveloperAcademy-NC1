@@ -22,4 +22,5 @@ class UserInput: ObservableObject, Encodable {
             self.email = inputValue
         }
     }
+    
 }

@@ -11,15 +11,18 @@ struct LoginModalView: View {
     @Binding var loginModal: Bool;
     @State var username: String = "";
     @State var password: String = "";
+    
     @EnvironmentObject var authState: AuthStates;
+    @StateObject var signInInput: SignInInput = SignInInput();
+    
     
     
     var body: some View {
         Color.white
         NavigationView {
             VStack {
-                TextField("Username", text: $username)
-                SecureField("Password", text: $password)
+                TextField("Username", text: $signInInput.username)
+                SecureField("Password", text: $signInInput.password)
                 Button(action: {
                     loginModal = false
                 }) {
@@ -27,14 +30,22 @@ struct LoginModalView: View {
                 }
                 
                 Button(action: {
-                    authState.setState(targetStatus: .authenticated)
+                    signInInput.signIn { success in
+                        switch success {
+                        case true:
+                            DispatchQueue.main.async {
+                                authState.setState(targetStatus: .authenticated)
+                            }
+                        case false:
+                            print("로그인 실패!")
+                        }
+                        
+                    }
                 }) {
                     Text("로그인")
                 }
                 NavigationLink("회원가입", destination: UserInputView(userInput: UserInput(), inputType: .Username))
             }
-            
-
         }
                 
     }
@@ -47,12 +58,5 @@ struct LoginModalView: View {
                 }
             }
         }
-    }
-}
-
-
-struct LoginModalView_Previews: PreviewProvider {
-    static var previews: some View {
-        LoginModalView(loginModal: .constant(true))
     }
 }
