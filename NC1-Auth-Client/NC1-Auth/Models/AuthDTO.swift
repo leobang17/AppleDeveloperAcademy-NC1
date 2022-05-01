@@ -13,11 +13,6 @@ import Foundation
 //}
 
 struct SignInData: Codable {
-    private let USER_DEFAULT_TOKEN = "jsonwebtoken";
-    private let USER_DEFAULT_ID = "user_id";
-    private let USER_DEFAULT_USERNAME = "username";
-    private let USER_DEFAULT_EMAIL = "email";
-    
     let token: String
     let id: Int
     let username: String
@@ -26,10 +21,10 @@ struct SignInData: Codable {
     public func setUserDefault() {
         let userDefaults = UserDefaults.standard
         
-        userDefaults.setValue(self.token, forKey: USER_DEFAULT_TOKEN)
-        userDefaults.setValue(self.id, forKey: USER_DEFAULT_ID)
-        userDefaults.setValue(self.username, forKey: USER_DEFAULT_USERNAME)
-        userDefaults.setValue(self.email, forKey: USER_DEFAULT_EMAIL)
+        userDefaults.setValue(self.token, forKey: UserDefaultEnv.token.getEnv)
+        userDefaults.setValue(self.id, forKey: UserDefaultEnv.id.getEnv)
+        userDefaults.setValue(self.username, forKey: UserDefaultEnv.username.getEnv)
+        userDefaults.setValue(self.email, forKey: UserDefaultEnv.email.getEnv)
     }
     
     public func deleteUserDefault() {

@@ -21,11 +21,9 @@ class SignInInput: ObservableObject {
     @Published var password: String = "";
     
     public func signIn(completion: @escaping (Bool) -> Void) {
-        let authService = AuthService()
+        let authService = ServiceDI.getInstance
         let body = SignInRequestBody(signInInput: self)
         
-    
-
         authService.signIn(body: body) { result in
             switch result {
             case .failure(let error):

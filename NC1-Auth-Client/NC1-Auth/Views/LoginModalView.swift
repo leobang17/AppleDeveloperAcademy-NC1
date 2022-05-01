@@ -9,12 +9,8 @@ import SwiftUI
 
 struct LoginModalView: View {
     @Binding var loginModal: Bool;
-    @State var username: String = "";
-    @State var password: String = "";
-    
     @EnvironmentObject var authState: AuthStates;
     @StateObject var signInInput: SignInInput = SignInInput();
-    
     
     
     var body: some View {
@@ -28,19 +24,8 @@ struct LoginModalView: View {
                 }) {
                     Text("뒤로가기")
                 }
-                
                 Button(action: {
-                    signInInput.signIn { success in
-                        switch success {
-                        case true:
-                            DispatchQueue.main.async {
-                                authState.setState(targetStatus: .authenticated)
-                            }
-                        case false:
-                            print("로그인 실패!")
-                        }
-                        
-                    }
+                    signinBtnHandler()
                 }) {
                     Text("로그인")
                 }
@@ -50,13 +35,17 @@ struct LoginModalView: View {
                 
     }
     
-    var mainView: some View {
-        VStack {
-            ZStack {
-                VStack {
-                    Text("fefefwefwe")
+    private func signinBtnHandler() {
+        signInInput.signIn { success in
+            switch success {
+            case true:
+                DispatchQueue.main.async {
+                    authState.setState(targetStatus: .authenticated)
                 }
+            case false:
+                print("로그인 실패!")
             }
+            
         }
     }
 }

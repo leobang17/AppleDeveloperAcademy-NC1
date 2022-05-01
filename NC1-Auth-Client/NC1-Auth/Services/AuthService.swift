@@ -13,18 +13,23 @@ enum AuthenticationError: Error {
     case custom(errorMessage: String)
 }
 
+enum BaseUrl {
+    case auth
+    
+    var url: String {
+        switch self {
+        case .auth:
+            return "auth/"
+        }
+    }
+}
+
 class AuthService {
-    private static let BASE_URL: String = "http://localhost:8080/auth/"
+    private let customRequest: CustomRequest;
+    private let baseUrl = BaseUrl.auth
     
     public func signIn(body: SignInRequestBody, completion: @escaping (Result<SignInData, AuthenticationError>) -> Void) {
-        guard let url = URL(string: AuthService.BASE_URL + "signin") else {
-            completion(.failure(.custom(errorMessage: "URL이 없음")))
-            return
-        }
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = try? JSONEncoder().encode(body)
+        let request = customRequest.postRequest(baseUrl: baseUrl, endpoint: "signin", body: body)
         
         URLSession.shared.dataTask(with: request) { (data, _, error) in
             if let error = error {
@@ -50,5 +55,9 @@ class AuthService {
             completion(.success(authData))
             
         }.resume()
+    }
+    
+    init(_ customRequest: CustomRequest) {
+        self.customRequest = customRequest;
     }
 }
