@@ -32,8 +32,8 @@ struct VisitorView: View {
                 
         }
         ButtonView(name: "idle로", targetStatus: .idle)
-        ButtonView(name: "visitor로", targetStatus: .visitor)
-        ButtonView(name: "authenticated로", targetStatus: .authenticated)
+//        ButtonView(name: "visitor로", targetStatus: .visitor)
+//        ButtonView(name: "authenticated로", targetStatus: .authenticated)
     }
 }
 

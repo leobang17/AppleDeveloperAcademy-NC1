@@ -13,6 +13,12 @@ enum AuthenticationError: Error {
     case custom(errorMessage: String)
 }
 
+enum SignUpError: Error {
+    case userExists
+    case error(error: Error)
+    case custom(errorMessage: String)
+}
+
 enum BaseUrl {
     case auth
     
@@ -27,6 +33,26 @@ enum BaseUrl {
 class AuthService {
     private let customRequest: CustomRequest;
     private let baseUrl = BaseUrl.auth
+    
+    public func signUp(body: UserInputRequestBody, completion: @escaping (Result<String, SignUpError>) -> Void) {
+        let request = customRequest.postRequest(baseUrl: baseUrl, endpoint: "signup", body: body)
+        
+        URLSession.shared.dataTask(with: request) { (data, response, error) in
+            if let error = error {
+                completion(.failure(.error(error: error)))
+                return
+            }
+            
+            guard let data = data else {
+                completion(.failure(.custom(errorMessage: "return value 없음")))
+                return
+            }
+            
+//            guard let loginResponse = try? JSONDecoder().decode(<#T##type: Decodable.Protocol##Decodable.Protocol#>, from: <#T##Data#>)
+            completion(.success("성공!"))
+        }.resume()
+        
+    }
     
     public func signIn(body: SignInRequestBody, completion: @escaping (Result<SignInData, AuthenticationError>) -> Void) {
         let request = customRequest.postRequest(baseUrl: baseUrl, endpoint: "signin", body: body)
@@ -55,6 +81,14 @@ class AuthService {
             completion(.success(authData))
             
         }.resume()
+    }
+    
+    public func signOut() {
+        let userDefault = UserDefaults.standard;
+        userDefault.removeObject(forKey: UserDefaultEnv.token.getEnv)
+        userDefault.removeObject(forKey: UserDefaultEnv.id.getEnv)
+        userDefault.removeObject(forKey: UserDefaultEnv.username.getEnv)
+        userDefault.removeObject(forKey: UserDefaultEnv.email.getEnv)
     }
     
     init(_ customRequest: CustomRequest) {

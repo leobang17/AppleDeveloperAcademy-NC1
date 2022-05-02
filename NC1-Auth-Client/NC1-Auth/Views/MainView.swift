@@ -8,14 +8,25 @@
 import SwiftUI
 
 struct MainView: View {
-    @StateObject var userInfo: UserInfo = UserInfo(username: "foo");
+    @StateObject var userInfo: UserInfo = UserInfo()
+    @EnvironmentObject var authStates: AuthStates;
     
     var body: some View {
         Group {
+            Text("유저 id: \(userInfo.userId)")
+            Text("유저 이름: \(userInfo.username)")
+            Text("유저 이메일: \(userInfo.email)")
+            
             Text("MainView 입니다.")
-            ButtonView(name: "idle로", targetStatus: .idle)
-            ButtonView(name: "visitor로", targetStatus: .visitor)
-            ButtonView(name: "authenticated로", targetStatus: .authenticated)
+            Button(action: {
+                let authService = ServiceDI.getInstance
+                authService.signOut()
+                DispatchQueue.main.async {
+                    authStates.setState(targetStatus: .visitor)
+                }
+            }) {
+                Text("로그아웃")
+            }
         }.environmentObject(userInfo)
     }
 }

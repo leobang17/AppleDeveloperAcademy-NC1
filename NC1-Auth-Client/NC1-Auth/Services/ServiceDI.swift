@@ -10,7 +10,7 @@ import Foundation
 class ServiceDI {
     public static let getInstance = ServiceDI().getService()
     
-    public func getService() -> AuthService {
+    private func getService() -> AuthService {
         return AuthService(getCustomRequest())
     }
     private func getCustomRequest() -> CustomRequest {

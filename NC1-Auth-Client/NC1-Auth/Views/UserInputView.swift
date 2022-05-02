@@ -34,6 +34,13 @@ struct UserInputView: View {
         }
     }
     
+    private func emptyChecker(_ inputValue: Binding<String>) -> Bool {
+        if inputValue.wrappedValue.isEmpty {
+            return true
+        }
+        return false
+    }
+    
     private func emptyChecker(_ inputValue: String) -> Bool {
         if inputValue.isEmpty {
             return true
@@ -48,15 +55,13 @@ struct UserInputView: View {
         return false
     }
     
-    private func pwdBtnHandler(_ original: String, _ confirm: String, _ userInput: UserInput, _ inputType: InputType) {
-        if pwdIdentityCheck(original, confirm) {
-            userInput.setValue(original, inputType)
-            authState.setState(targetStatus: .authenticated)
-            print(userInput.email)
-            print(userInput.username)
-            print(userInput.password)
+    private func pwdBtnHandler(_ original: Binding<String>, _ confirm: String, _ userInput: UserInput, _ inputType: InputType) {
+        if pwdIdentityCheck(original.wrappedValue, confirm) {
+            userInput.signUp()
         }
     }
+    
+    
     
     private func testResolver() -> Binding<String> {
         switch inputType {
@@ -71,36 +76,45 @@ struct UserInputView: View {
     
     var body: some View {
         if inputType != .Password {
-            VStack {
-                TextField("\(inputType.rawValue)", text: testResolver())
-                NavigationLink("다음으로", destination: navLinkResolver(inputType))
-                    .simultaneousGesture(TapGesture().onEnded {
-                        userInput.setValue(inputValue, inputType)
-                    })
-                    .disabled(emptyChecker(inputValue))
-            }
+            InputView
         } else {
             PasswordInputView
         }
-        
+    }
+    
+    var InputView: some View {
+        VStack {
+            Text("이름은? \(userInput.username)")
+            Text("이멜은? \(userInput.email)")
+            Text("비번은? \(userInput.password)")
+            TextField("\(inputType.rawValue)", text: testResolver())
+                .disableAutocorrection(true)
+            NavigationLink("다음으로", destination: navLinkResolver(inputType))
+                    .disabled(emptyChecker(testResolver()))
+        }
     }
     
     var PasswordInputView: some View {
         VStack {
-            SecureField("\(inputType.rawValue)", text: $inputValue)
+            Text("이름은? \(userInput.username)")
+            Text("이멜은? \(userInput.email)")
+            Text("비번은? \(userInput.password)")
+            SecureField("\(inputType.rawValue)", text: testResolver())
+                .disableAutocorrection(true)
             SecureField("비밀번호를 다시 한번 입력해주세요.", text: $passwordCheckValue)
+                .disableAutocorrection(true)
             
-            if !pwdIdentityCheck(inputValue, passwordCheckValue) {
+            if !pwdIdentityCheck(testResolver().wrappedValue, passwordCheckValue) {
                 Text("비밀번호 확인이 다릅니다.")
             }
             
             Button(action: {
-                pwdBtnHandler(inputValue, passwordCheckValue, userInput, inputType)
+                pwdBtnHandler(testResolver(), passwordCheckValue, userInput, inputType)
             }) {
                 Text("회원가입 완료")
             }
-                .disabled(emptyChecker(inputValue) || emptyChecker(passwordCheckValue))
-                .disabled(!pwdIdentityCheck(inputValue, passwordCheckValue))
+                .disabled(emptyChecker(testResolver()) || emptyChecker(passwordCheckValue))
+                .disabled(!pwdIdentityCheck(testResolver().wrappedValue, passwordCheckValue))
         }
     }
 }
