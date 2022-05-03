@@ -34,7 +34,20 @@ class AuthService {
     private let customRequest: CustomRequest;
     private let baseUrl = BaseUrl.auth
     
-    public func signUp(body: UserInputRequestBody, completion: @escaping (Result<String, SignUpError>) -> Void) {
+    public func kakao(completion: @escaping (Bool) -> Void) {
+        let request = customRequest.getRequest(baseUrl: baseUrl, endpoint: "kakao")
+        print(request.url)
+        
+        URLSession.shared.dataTask(with: request) { (data, response, error) in
+            if let error = error {
+                completion(false)
+            }
+            print("여기 들어옴")
+            completion(true)
+        }.resume()
+    }
+    
+    public func signUp(body: UserInputRequestBody, completion: @escaping (Result<SignInInput, SignUpError>) -> Void) {
         let request = customRequest.postRequest(baseUrl: baseUrl, endpoint: "signup", body: body)
         
         URLSession.shared.dataTask(with: request) { (data, response, error) in
@@ -48,8 +61,10 @@ class AuthService {
                 return
             }
             
-//            guard let loginResponse = try? JSONDecoder().decode(<#T##type: Decodable.Protocol##Decodable.Protocol#>, from: <#T##Data#>)
-            completion(.success("성공!"))
+//            guard let loginResponse = try? JSONDecoder().decode(<#T##type: Decodable.Protocol##Decodable.Protocol#>, from: )
+            let signInInput = self.userInputConverter(body)
+            
+            completion(.success(signInInput))
         }.resume()
         
     }
@@ -89,6 +104,14 @@ class AuthService {
         userDefault.removeObject(forKey: UserDefaultEnv.id.getEnv)
         userDefault.removeObject(forKey: UserDefaultEnv.username.getEnv)
         userDefault.removeObject(forKey: UserDefaultEnv.email.getEnv)
+    }
+    
+    private func userInputConverter(_ userInput: UserInputRequestBody) -> SignInInput {
+        let signInInput = SignInInput()
+        signInInput.username = userInput.username
+        signInInput.password = userInput.password
+        return signInInput
+        
     }
     
     init(_ customRequest: CustomRequest) {

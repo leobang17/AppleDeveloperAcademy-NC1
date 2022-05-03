@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreVideo
 
 struct UserInputRequestBody: Codable {
     var username: String;
@@ -42,12 +43,17 @@ class UserInput: ObservableObject {
         }
     }
     
-    public func signUp() {
+    public func signUp(completion: @escaping (Result<SignInInput, Error>) -> Void) {
         let authService = ServiceDI.getInstance
         let body = UserInputRequestBody(userInput: self)
         
         authService.signUp(body: body) { result in
-            print("싸인업 성공!")
+            switch result {
+            case .success(let data):
+                completion(.success(data))
+            case .failure(let error):
+                completion(.failure(error))
+            }
         }
         
     }

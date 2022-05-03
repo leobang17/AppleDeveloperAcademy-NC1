@@ -17,6 +17,15 @@ struct VisitorView: View {
                     loginModal = true;
                 }
                 Button("OAuth1") {
+                    let service = ServiceDI.getInstance
+                    service.kakao { result in
+                        if result {
+                            print("성공")
+                        } else {
+                            print("실패")
+                        }
+                        
+                    }
                     print("oauth1 누름")
                 }
                 Button("OAuth2") {

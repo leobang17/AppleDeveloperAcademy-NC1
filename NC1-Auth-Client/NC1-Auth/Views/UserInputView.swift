@@ -57,13 +57,27 @@ struct UserInputView: View {
     
     private func pwdBtnHandler(_ original: Binding<String>, _ confirm: String, _ userInput: UserInput, _ inputType: InputType) {
         if pwdIdentityCheck(original.wrappedValue, confirm) {
-            userInput.signUp()
+            userInput.signUp { result in
+                switch result {
+                case .success(let data):
+                    data.signIn { success in
+                        switch success {
+                        case true:
+                            DispatchQueue.main.async {
+                                authState.setState(targetStatus: .authenticated)
+                            }
+                        case false:
+                            print("이럴 수 있나?")
+                        }
+                    }
+                case .failure(_):
+                    print("회원가입 실패")
+                }
+            }
         }
     }
     
-    
-    
-    private func testResolver() -> Binding<String> {
+    private func textResolver() -> Binding<String> {
         switch inputType {
         case .Username:
             return $userInput.username;
@@ -87,10 +101,10 @@ struct UserInputView: View {
             Text("이름은? \(userInput.username)")
             Text("이멜은? \(userInput.email)")
             Text("비번은? \(userInput.password)")
-            TextField("\(inputType.rawValue)", text: testResolver())
+            TextField("\(inputType.rawValue)", text: textResolver())
                 .disableAutocorrection(true)
             NavigationLink("다음으로", destination: navLinkResolver(inputType))
-                    .disabled(emptyChecker(testResolver()))
+                    .disabled(emptyChecker(textResolver()))
         }
     }
     
@@ -99,22 +113,22 @@ struct UserInputView: View {
             Text("이름은? \(userInput.username)")
             Text("이멜은? \(userInput.email)")
             Text("비번은? \(userInput.password)")
-            SecureField("\(inputType.rawValue)", text: testResolver())
+            SecureField("\(inputType.rawValue)", text: textResolver())
                 .disableAutocorrection(true)
             SecureField("비밀번호를 다시 한번 입력해주세요.", text: $passwordCheckValue)
                 .disableAutocorrection(true)
             
-            if !pwdIdentityCheck(testResolver().wrappedValue, passwordCheckValue) {
+            if !pwdIdentityCheck(textResolver().wrappedValue, passwordCheckValue) {
                 Text("비밀번호 확인이 다릅니다.")
             }
             
             Button(action: {
-                pwdBtnHandler(testResolver(), passwordCheckValue, userInput, inputType)
+                pwdBtnHandler(textResolver(), passwordCheckValue, userInput, inputType)
             }) {
                 Text("회원가입 완료")
             }
-                .disabled(emptyChecker(testResolver()) || emptyChecker(passwordCheckValue))
-                .disabled(!pwdIdentityCheck(testResolver().wrappedValue, passwordCheckValue))
+                .disabled(emptyChecker(textResolver()) || emptyChecker(passwordCheckValue))
+                .disabled(!pwdIdentityCheck(textResolver().wrappedValue, passwordCheckValue))
         }
     }
 }
